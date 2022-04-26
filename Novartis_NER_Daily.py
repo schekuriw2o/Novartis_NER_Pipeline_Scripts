@@ -20,7 +20,7 @@ gcs_source_filepath = sys.argv[3]
 nlp_license_secret_manager_key_id = sys.argv[4]
 nlp_key_id_secret_manager_key_id= sys.argv[5]
 nlp_secret_key_secret_manager_key_id = sys.argv[6]
-nlp_secret_key_secret_manager_key = sys.argv[7]
+nlp_secret_key_secret_manager_key = sys.argv[7]x
 
 DISEASES_MODEL_NAME = sys.argv[8]
 PSOLOGY_MODEL_NAME = sys.argv[9]
