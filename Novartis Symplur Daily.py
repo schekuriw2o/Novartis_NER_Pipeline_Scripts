@@ -71,7 +71,7 @@ def get_influencers(url):
         indiv.append(infleuncer_name)
         indiv.append(symplur_rank)
         indiv.append(hsg_score)
-        indiv.append(t['user']['profile_image'])
+        indiv.append(t['user']['profile_image'] if 'profile_image' in t['user'] else "")
         stake = None
         if 'stakeholder_categories' in t['user'] and len(t['user']['stakeholder_categories']) > 0:
             for category in t['user']['stakeholder_categories']:
@@ -104,7 +104,7 @@ def get_urls(url):
         date = start_time
         resolved_rank = t['resolved_url']
         title = t['meta']['title']
-        description = t['meta']['description']
+        description = t['meta']['description'] if 'description' in t['meta'] else ""
         indiv.append(date)
         indiv.append(url)
         indiv.append(resolved_rank)
