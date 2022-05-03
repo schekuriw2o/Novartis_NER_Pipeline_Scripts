@@ -30,22 +30,26 @@ def get_tweets(url):
     columns = ['string_field_0', 'string_field_1', 'string_field_2', 'string_field_3', 'string_field_4']
     data = []
     for t in text['tweets']:
-        indiv = []
-        tweet = t['tweet']
-        user = tweet['user']
-        indiv.append(user['display_name'])
-        indiv.append('@' + user['screen_name'])
-        stake = None
-        if 'stakeholder_categories' in user and len(user['stakeholder_categories']) > 0:
-            for category in user['stakeholder_categories']:
-                if stake is None:
-                    stake = category['name']
-                else:
-                    stake = stake + ' , ' + category['name']
-        indiv.append(stake)
-        indiv.append(tweet['text'])
-        indiv.append(t['timestamp'])
-        data.append(indiv)
+        try:
+            indiv = []
+            tweet = t['tweet'] if 'tweet' in t else {}
+            user = tweet['user'] if 'user' in t else {}
+            indiv.append(user['display_name'] if 'display_name' in user else "" )
+            indiv.append('@' + user['screen_name'] if 'screen_name' in user else "")
+            stake = None
+            if 'stakeholder_categories' in user and len(user['stakeholder_categories']) > 0:
+                for category in user['stakeholder_categories']:
+                    if stake is None:
+                        stake = category['name']
+                    else:
+                        stake = stake + ' , ' + category['name']
+            indiv.append(stake)
+            indiv.append(tweet['text'] if 'text' in tweet else "")
+            indiv.append(t['timestamp'] if 'timestamp' in t else "")
+            data.append(indiv)
+        except KeyError:
+            print(KeyError)
+
     df = pd.DataFrame(data, columns=columns)
 
     df.to_csv('{0}.csv'.format(file_name), encoding='utf-8', index=False)
@@ -62,25 +66,29 @@ def get_influencers(url):
     columns = ['date', 'influencer_name', 'symplur_rank', 'hsg_score', 'profile_image', 'stakeholder_categories']
     data = []
     for t in text['influencers']:
-        indiv = []
-        infleuncer_name = t['user']['display_name']
-        date = start_time
-        hsg_score = t['user']['hsg_score']
-        symplur_rank = t['symplurrank']
-        indiv.append(date)
-        indiv.append(infleuncer_name)
-        indiv.append(symplur_rank)
-        indiv.append(hsg_score)
-        indiv.append(t['user']['profile_image'] if 'profile_image' in t['user'] else "")
-        stake = None
-        if 'stakeholder_categories' in t['user'] and len(t['user']['stakeholder_categories']) > 0:
-            for category in t['user']['stakeholder_categories']:
-                if stake is None:
-                    stake = category['name']
-                else:
-                    stake = stake + ' , ' + category['name']
-        indiv.append(stake)
-        data.append(indiv)
+        try:
+            indiv = []
+            infleuncer_name = t['user']['display_name'] if 'display_name' in t['user'] else ""
+            date = start_time
+            hsg_score = t['user']['hsg_score'] if 'hsg_score' in t['user'] else ""
+            symplur_rank = t['symplurrank'] if 'symplurrank' in t else ""
+            indiv.append(date)
+            indiv.append(infleuncer_name)
+            indiv.append(symplur_rank)
+            indiv.append(hsg_score)
+            indiv.append(t['user']['profile_image'] if 'profile_image' in t['user'] else "")
+            stake = None
+            if 'stakeholder_categories' in t['user'] and len(t['user']['stakeholder_categories']) > 0:
+                for category in t['user']['stakeholder_categories']:
+                    if stake is None:
+                        stake = category['name']
+                    else:
+                        stake = stake + ' , ' + category['name']
+            indiv.append(stake)
+            data.append(indiv)
+        except KeyError:
+            print(KeyError)
+
 
     df = pd.DataFrame(data, columns=columns)
 
@@ -99,18 +107,21 @@ def get_urls(url):
     columns = ['date', 'url', 'resolved_url', 'title', 'description']
     data = []
     for t in text['urls']:
-        indiv = []
-        url = t['url']
-        date = start_time
-        resolved_rank = t['resolved_url']
-        title = t['meta']['title']
-        description = t['meta']['description'] if 'description' in t['meta'] else ""
-        indiv.append(date)
-        indiv.append(url)
-        indiv.append(resolved_rank)
-        indiv.append(title)
-        indiv.append(description)
-        data.append(indiv)
+        try:
+            indiv = []
+            url = t['url'] if 'url' in t else ""
+            date = start_time
+            resolved_rank = t['resolved_url'] if 'resolved_url' in t else ""
+            title = t['meta']['title'] if 'title' in t['meta'] else ""
+            description = t['meta']['description'] if 'description' in t['meta'] else ""
+            indiv.append(date)
+            indiv.append(url)
+            indiv.append(resolved_rank)
+            indiv.append(title)
+            indiv.append(description)
+            data.append(indiv)
+        except KeyError:
+            print(KeyError)
 
     df = pd.DataFrame(data, columns=columns)
 
