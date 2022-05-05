@@ -27,7 +27,7 @@ def get_tweets(url):
 
     text = json.loads(response.text)
 
-    columns = ['string_field_0', 'string_field_1', 'string_field_2', 'string_field_3', 'string_field_4']
+    columns = ['name', 'IDs', 'stakeholder_categories', 'Contents', 'date']
     data = []
     for t in text['tweets']:
         try:
