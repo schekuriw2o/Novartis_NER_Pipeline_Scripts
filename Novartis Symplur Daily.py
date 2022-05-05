@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from hashlib import sha256
 
-yesterday = datetime.strftime(datetime.utcnow() - timedelta(2), '%Y-%m-%d')
+yesterday = datetime.strftime(datetime.utcnow() - timedelta(1), '%Y-%m-%d')
 start_time = yesterday + 'T00:00:00'
 end_time = yesterday + 'T23:59:59'
 file_name = sha256('{0}_{1}'.format(start_time, end_time).encode('utf-8')).hexdigest()
