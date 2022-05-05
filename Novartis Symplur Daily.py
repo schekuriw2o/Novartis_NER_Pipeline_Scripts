@@ -4,7 +4,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from hashlib import sha256
 
-yesterday = datetime.strftime(datetime.utcnow() - timedelta(1), '%Y-%m-%d')
+yesterday = datetime.strftime(datetime.utcnow() - timedelta(2), '%Y-%m-%d')
 start_time = yesterday + 'T00:00:00'
 end_time = yesterday + 'T23:59:59'
 file_name = sha256('{0}_{1}'.format(start_time, end_time).encode('utf-8')).hexdigest()
@@ -26,14 +26,14 @@ def get_tweets(url):
     response = requests.request("GET", url, headers=headers)
 
     text = json.loads(response.text)
-
+    print(text)
     columns = ['name', 'IDs', 'stakeholder_categories', 'Contents', 'date']
     data = []
     for t in text['tweets']:
         try:
             indiv = []
             tweet = t['tweet'] if 'tweet' in t else {}
-            user = tweet['user'] if 'user' in t else {}
+            user = tweet['user'] if 'user' in tweet else {}
             indiv.append(user['display_name'] if 'display_name' in user else "" )
             indiv.append('@' + user['screen_name'] if 'screen_name' in user else "")
             stake = None
@@ -102,7 +102,6 @@ def get_urls(url):
     response = requests.request("GET", url, headers=headers)
 
     text = json.loads(response.text)
-    print(text)
 
     columns = ['date', 'url', 'resolved_url', 'title', 'description']
     data = []
