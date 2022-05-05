@@ -26,7 +26,6 @@ def get_tweets(url):
     response = requests.request("GET", url, headers=headers)
 
     text = json.loads(response.text)
-    print(text)
     columns = ['name', 'IDs', 'stakeholder_categories', 'Contents', 'date']
     data = []
     for t in text['tweets']:
@@ -52,7 +51,7 @@ def get_tweets(url):
 
     df = pd.DataFrame(data, columns=columns)
 
-    df.to_csv('{0}.csv'.format(file_name), encoding='utf-8', index=False)
+    df.to_csv('{0}.csv'.format(file_name), encoding='utf-8',sep='|', index=False)
 
     # df.write.option("sep","|").mode('overwrite').csv('gs://w2odataengineering/client_work/source/', header=False, index=False)
     # df.to_csv('gs://w2odataengineering/client_work/source/{0}.csv'.format('test1'), encoding='utf-8', sep='|', index=False)
@@ -92,7 +91,7 @@ def get_influencers(url):
 
     df = pd.DataFrame(data, columns=columns)
 
-    df.to_csv('{0}_influencers.csv'.format(file_name), encoding='utf-8', index=False)
+    df.to_csv('{0}_influencers.csv'.format(file_name), encoding='utf-8',sep='|', index=False)
 
     # df.write.option("sep","|").mode('overwrite').csv('gs://w2odataengineering/client_work/source/', header=False, index=False)
     # df.to_csv('gs://w2odataengineering/client_work/source/{0}.csv'.format('test1'), encoding='utf-8', sep='|', index=False)
@@ -117,14 +116,14 @@ def get_urls(url):
             indiv.append(url)
             indiv.append(resolved_rank)
             indiv.append(title)
-            indiv.append(description)
+            indiv.append('asdffs' + description)
             data.append(indiv)
         except KeyError:
             print(KeyError)
 
     df = pd.DataFrame(data, columns=columns)
 
-    df.to_csv('{0}_urls.csv'.format(file_name), encoding='utf-8', index=False)
+    df.to_csv('{0}_urls.csv'.format(file_name), encoding='utf-8',sep='|', index=False)
 
     # df.write.option("sep","|").mode('overwrite').csv('gs://w2odataengineering/client_work/source/', header=False, index=False)
     # df.to_csv('gs://w2odataengineering/client_work/source/{0}.csv'.format('test1'), encoding='utf-8', sep='|', index=False)
